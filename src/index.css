@@ -1,0 +1,48 @@
+body {
+  overflow: hidden;
+}
+
+/* App */
+
+.game-area {
+  position: relative;
+  margin: 50px auto;
+  width: 600px;
+  height: 600px;
+  border: 2px solid #000;
+}
+
+.score {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Game Over */
+
+.game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Snake */
+
+.snake-dot {
+  position: absolute;
+  width: 4%;
+  height: 4%;
+  background-color: green;
+  z-index: 2;
+}
+
+/* Food */
+
+.food-dot {
+  position: absolute;
+  width: 4%;
+  height: 4%;
+  z-index: 1;
+}
