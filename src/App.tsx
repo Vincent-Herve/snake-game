@@ -1,22 +1,26 @@
 import Food from "./components/Food";
-import GameOver from "./components/GameOver";
+import Start from "./components/Start";
 import Snake from "./components/Snake";
-import { boardDefaultValue } from "./data/boardDefaultValue";
 import useBoardHook from "./hooks/useBoardHook";
 
 function App(): JSX.Element {
-  const { data, handleStartAgain } = useBoardHook(boardDefaultValue);
-
+  const { snakeDots, food, isStarted, gameOver, score, handleStartGame } =
+    useBoardHook();
   return (
     <>
-      {data.gameOver && <GameOver startAgain={handleStartAgain} />}
-      {!data.gameOver && (
+      {gameOver && <h2 className="game-over">Game Over</h2>}
+      {!isStarted && <Start onStart={handleStartGame} />}
+      {!gameOver && isStarted && (
         <div className="game-area">
-          <Snake snakeDots={data.snakeDots} />
-          <Food food={data.food} />
+          <Snake snakeDots={snakeDots} />
+          <Food food={food} />
         </div>
       )}
-      <div className="score">Score: {data.score}</div>
+      {(isStarted || gameOver) && (
+        <div className="score">
+          {isStarted ? "Score " : "Last score "} : {score}
+        </div>
+      )}
     </>
   );
 }

@@ -11,6 +11,7 @@ export interface IBoardInitialState {
   score: number;
   speed: number;
   snakeDots: ISnakeDot[];
+  isStarted: boolean;
   gameOver: boolean;
 }
 

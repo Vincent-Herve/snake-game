@@ -1,18 +1,18 @@
-import { IBoardInitialState, ISnakeDot } from "../interfaces";
+import { ISnakeDot } from "../interfaces";
 
-export type TFood = {
-  food: number[];
-};
+export type TFood = number[];
 
-export type TGameOver = {
-  startAgain: () => void;
-};
+export type TStart = () => void;
 
 export type TSnake = {
   snakeDots: ISnakeDot[];
 };
 
 export type TUseBoardHookOutput = {
-  data: IBoardInitialState;
-  handleStartAgain: () => void;
+  snakeDots: ISnakeDot[];
+  isStarted: boolean;
+  gameOver: boolean;
+  food: TFood;
+  score: number;
+  handleStartGame: TStart;
 };

@@ -19,11 +19,21 @@ body {
   transform: translate(-50%, -50%);
 }
 
+/* Start */
+
+.start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* Game Over */
 
 .game-over {
+  color: red;
   position: absolute;
-  top: 50%;
+  top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -34,7 +44,7 @@ body {
   position: absolute;
   width: 4%;
   height: 4%;
-  background-color: green;
+  background-color: fuchsia;
   z-index: 2;
 }
 

@@ -6,6 +6,6 @@ export enum DirectionEnum {
 }
 
 export enum BoardActionTypeEnum {
-  START_AGAIN = "startAgain",
+  START_GAME = "startGame",
   CHANGED = "changed",
 }

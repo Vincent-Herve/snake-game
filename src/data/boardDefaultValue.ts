@@ -17,5 +17,6 @@ export const boardDefaultValue: IBoardInitialState = {
       left: 4,
     },
   ],
+  isStarted: false,
   gameOver: false,
 };

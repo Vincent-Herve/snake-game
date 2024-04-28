@@ -2,17 +2,18 @@ import { boardDefaultValue } from "../data/boardDefaultValue";
 import { BoardActionTypeEnum } from "../enums";
 import { IBoardAction, IBoardInitialState } from "../interfaces";
 
-export function boardReducer(data: IBoardInitialState, action: IBoardAction) {
+export function boardReducer(state: IBoardInitialState, action: IBoardAction) {
   switch (action.type) {
-    case BoardActionTypeEnum.START_AGAIN: {
+    case BoardActionTypeEnum.START_GAME: {
       return {
         ...boardDefaultValue,
+        isStarted: true,
       };
     }
 
     case BoardActionTypeEnum.CHANGED: {
       return {
-        ...data,
+        ...state,
         ...action.payload,
       };
     }

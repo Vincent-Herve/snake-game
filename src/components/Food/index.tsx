@@ -1,7 +1,7 @@
 import apple from "../../img/apple.png";
 import { TFood } from "../../types";
 
-function Food({ food }: TFood): JSX.Element {
+function Food({ food }: { food: TFood }): JSX.Element {
   return (
     <img
       src={apple}

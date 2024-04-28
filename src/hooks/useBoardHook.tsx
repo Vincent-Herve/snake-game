@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { boardDefaultValue } from "../data/boardDefaultValue";
 import { BoardActionTypeEnum, DirectionEnum } from "../enums";
 import { IBoardInitialState, ISnakeDot } from "../interfaces";
@@ -7,48 +7,45 @@ import { TUseBoardHookOutput } from "../types";
 import { getRandomCoordinates } from "../utilities/get-random-coordinates";
 
 function useBoardHook(
-  defaultValue: IBoardInitialState = boardDefaultValue
+  initialValue: IBoardInitialState = boardDefaultValue
 ): TUseBoardHookOutput {
-  const [data, dispatch] = useReducer(boardReducer, defaultValue);
+  const [data, dispatch] = useReducer(boardReducer, initialValue);
+  const axe = useRef<"x" | "y">("x");
 
-  const handleStartAgain = (): void => {
-    dispatch({ type: BoardActionTypeEnum.START_AGAIN });
+  const handleStartGame = (): void => {
+    dispatch({ type: BoardActionTypeEnum.START_GAME });
   };
 
   const handleChanged = (payload: Partial<IBoardInitialState>): void => {
     dispatch({ type: BoardActionTypeEnum.CHANGED, payload });
   };
 
-  const isAxeX = (): boolean =>
-    data.direction === DirectionEnum.LEFT ||
-    data.direction === DirectionEnum.RIGHT;
-  const isAxeY = (): boolean =>
-    data.direction === DirectionEnum.UP ||
-    data.direction === DirectionEnum.DOWN;
+  const isAxeX = (): boolean => axe.current === "x";
+  const isAxeY = (): boolean => axe.current === "y";
 
   const onKeyDown = (e: KeyboardEvent): void => {
+    if (
+      ((e.code === "ArrowUp" || e.code === "ArrowDown") && isAxeY()) ||
+      ((e.code === "ArrowLeft" || e.code === "ArrowRight") && isAxeX())
+    ) {
+      return;
+    }
     switch (e.code) {
       case "ArrowUp":
-        if (isAxeX()) {
-          handleChanged({ direction: DirectionEnum.UP });
-        } else {
-          return;
-        }
+        handleChanged({ direction: DirectionEnum.UP });
+        axe.current = "y";
         break;
       case "ArrowDown":
-        if (isAxeX()) {
-          handleChanged({ direction: DirectionEnum.DOWN });
-        }
+        handleChanged({ direction: DirectionEnum.DOWN });
+        axe.current = "y";
         break;
       case "ArrowLeft":
-        if (isAxeY()) {
-          handleChanged({ direction: DirectionEnum.LEFT });
-        }
+        handleChanged({ direction: DirectionEnum.LEFT });
+        axe.current = "x";
         break;
       case "ArrowRight":
-        if (isAxeY()) {
-          handleChanged({ direction: DirectionEnum.RIGHT });
-        }
+        handleChanged({ direction: DirectionEnum.RIGHT });
+        axe.current = "x";
         break;
     }
   };
@@ -88,7 +85,8 @@ function useBoardHook(
 
     const gameOver = (): void => {
       if (!data.gameOver) {
-        handleChanged({ gameOver: true });
+        handleChanged({ isStarted: false, gameOver: true });
+        axe.current = "x";
       }
     };
 
@@ -131,7 +129,7 @@ function useBoardHook(
       }
     };
 
-    if (!data.gameOver) {
+    if (data.isStarted && !data.gameOver) {
       interval = setInterval(moveSnake, data.speed);
     }
 
@@ -150,7 +148,14 @@ function useBoardHook(
 
   document.onkeydown = onKeyDown;
 
-  return { data, handleStartAgain };
+  return {
+    snakeDots: data.snakeDots,
+    food: data.food,
+    score: data.score,
+    isStarted: data.isStarted,
+    gameOver: data.gameOver,
+    handleStartGame,
+  };
 }
 
 export default useBoardHook;
